@@ -58,4 +58,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>SET PLUGIN_DIR="D:\Program Files (x86)\Steam\steamapps\common\PULSARLostColony\PULSAR_LostColony_Data\Managed\Plugins\"
+
+IF EXIST %25PLUGIN_DIR%25 (
+    ECHO Copying DLLs to Plugins directory...
+    XCOPY /Y /F "$(TargetPath)" %25PLUGIN_DIR%25
+)</PostBuildEvent>
+  </PropertyGroup>
 </Project>

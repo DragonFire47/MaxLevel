@@ -4,7 +4,7 @@ namespace MaxLevel
 {
     public class Plugin : PulsarPlugin
     {
-        public override string Version => "0.0.2";
+        public override string Version => "0.0.3";
 
         public override string Author => "Dragon";
 

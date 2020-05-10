@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using PulsarPluginLoader.Utilities;
 
 namespace MaxLevel
 {
@@ -7,20 +8,22 @@ namespace MaxLevel
         [HarmonyPatch(typeof(PLShipComponent), "createHashFromInfo")]
         class CompCreateHashPatch
         {
-            static void Prefix(ref uint __result, ref int inAST, ref int inSubType, ref int inLevel, ref int inSubTypeData0, ref int inVisualSlot)
+            static bool Prefix(ref uint __result, ref int inAST, ref int inSubType, ref int inLevel, ref int inSubTypeData0, ref int inVisualSlot)
             {
+				Messaging.Notification("CreatingHash");
                 uint num = (uint)(inAST & 63);
                 uint num2 = (uint)((uint)(inSubType & 63) << 6);
                 uint num3 = (uint)((uint)(inLevel & 63) << 12);
                 uint num4 = (uint)((uint)(inSubTypeData0 & 63) << 18);
                 uint num5 = (uint)((uint)(inVisualSlot & 63) << 24);
                 __result = num | num2 | num3 | num4 | num5;
-            }
+				return false;
+			}
         }
         [HarmonyPatch(typeof(PLShipComponent), "getHash")]
         class CompGetHashPatch
         {
-            static void Prefix(PLShipComponent __instance, ref uint __result)
+            static bool Prefix(PLShipComponent __instance, ref uint __result)
             {
                 uint num = (uint)(__instance.ActualSlotType & (ESlotType)63);
                 uint num2 = (uint)((uint)(__instance.SubType & 63) << 6);
@@ -28,12 +31,13 @@ namespace MaxLevel
                 uint num4 = ((uint)__instance.SubTypeData & 63U) << 18;
                 uint num5 = (uint)((uint)(__instance.VisualSlotType & (ESlotType)63) << 24);
                 __result = num | num2 | num3 | num4 | num5;
-            }
+				return false;
+			}
         }
         [HarmonyPatch(typeof(PLShipComponent), "CreateShipComponentFromHash")]
         class CompCreateCompFromHashPatch
         {
-            static void Prefix(ref int inHash, ref PLShipComponent __result)
+            static bool Prefix(ref int inHash, ref PLShipComponent __result)
             {
 				uint num = (uint)(inHash & 63);
 				uint inSubType = (uint)inHash >> 6 & 63U;
@@ -134,6 +138,7 @@ namespace MaxLevel
 					}
 				}
 				__result = plshipComponent;
+				return false;
 			}
         }
     }
