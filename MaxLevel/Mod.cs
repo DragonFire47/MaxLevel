@@ -4,7 +4,7 @@ namespace MaxLevel
 {
     public class Mod : PulsarMod
     {
-        public override string Version => "0.1.2";
+        public override string Version => "0.1.3";
 
         public override string Author => "Dragon";
 
