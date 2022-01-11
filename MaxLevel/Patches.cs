@@ -1,5 +1,4 @@
 ﻿using HarmonyLib;
-using PulsarPluginLoader.Utilities;
 
 namespace MaxLevel
 {
@@ -10,7 +9,6 @@ namespace MaxLevel
         {
             static bool Prefix(ref uint __result, ref int inAST, ref int inSubType, ref int inLevel, ref int inSubTypeData0, ref int inVisualSlot)
             {
-				Messaging.Notification("CreatingHash");
                 uint num = (uint)(inAST & 63);
                 uint num2 = (uint)((uint)(inSubType & 63) << 6);
                 uint num3 = (uint)((uint)(inLevel & 255) << 12);
