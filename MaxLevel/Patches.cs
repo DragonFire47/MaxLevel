@@ -13,10 +13,10 @@ namespace MaxLevel
             static bool Prefix(ref uint __result, ref int inAST, ref int inSubType, ref int inLevel, ref int inSubTypeData0, ref int inVisualSlot)
             {
                 uint num = (uint)(inAST & 63);
-                uint num2 = (uint)((uint)(inSubType & 63) << 6);
-                uint num3 = (uint)((uint)(inLevel & 255) << 12);
-                uint num4 = (uint)((uint)(inSubTypeData0 & 63) << 20);
-                uint num5 = (uint)((uint)(inVisualSlot & 63) << 26);
+                uint num2 = (uint)(inSubType & 63) << 6;
+                uint num3 = (uint)(inLevel & 255) << 12;
+                uint num4 = (uint)(inSubTypeData0 & 63) << 20;
+                uint num5 = (uint)(inVisualSlot & 63) << 26;
                 __result = num | num2 | num3 | num4 | num5;
 				return false;
 			}
@@ -26,11 +26,11 @@ namespace MaxLevel
         {
             static bool Prefix(PLShipComponent __instance, ref uint __result)
             {
-                uint num = (uint)(__instance.ActualSlotType & (ESlotType)63);
-                uint num2 = (uint)((uint)(__instance.SubType & 63) << 6);
-                uint num3 = (uint)((uint)(__instance.Level & 255) << 12);
+                uint num = (uint)__instance.ActualSlotType & 63U;
+                uint num2 = ((uint)__instance.SubType & 63U) << 6;
+                uint num3 = ((uint)__instance.Level & 255) << 12;
                 uint num4 = ((uint)__instance.SubTypeData & 63U) << 20;
-                uint num5 = (uint)((uint)(__instance.VisualSlotType & (ESlotType)63) << 26);
+                uint num5 = ((uint)__instance.VisualSlotType & 63U) << 26;
                 __result = num | num2 | num3 | num4 | num5;
 				return false;
 			}
@@ -42,12 +42,14 @@ namespace MaxLevel
             {
 				List<CodeInstruction> instructionList = instructions.ToList();
 
-				instructionList[13].opcode = OpCodes.Ldc_I4;
+                instructionList[13].opcode = OpCodes.Ldc_I4;
 				instructionList[13].operand = 255;
-				instructionList[17].operand = (sbyte)20;
-				instructionList[23].operand = (sbyte)26;
+                instructionList[17].opcode = OpCodes.Ldc_I4;
+                instructionList[17].operand = 20;
+                instructionList[23].opcode = OpCodes.Ldc_I4;
+                instructionList[23].operand = 26;
 
-				return instructionList.AsEnumerable();
+                return instructionList.AsEnumerable();
 			}
 		}
 		[HarmonyPatch(typeof(PLPawnItem), "getHash")]
@@ -55,9 +57,9 @@ namespace MaxLevel
         {
 			static bool Prefix(PLPawnItem __instance, ref uint __result)
             {
-				uint num = (uint)(__instance.PawnItemType & (EPawnItemType)63);
-				uint num2 = (uint)((uint)(__instance.SubType & 63) << 6);
-				uint num3 = (uint)((uint)(__instance.Level & 1048575) << 12);
+				uint num = (uint)__instance.PawnItemType & 63U;
+				uint num2 = (uint)(__instance.SubType & 63U) << 6;
+				uint num3 = (uint)(__instance.Level & 1048575U) << 12;
 				__result = num | num2 | num3;
 				return false;
             }
@@ -67,9 +69,9 @@ namespace MaxLevel
         {
 			static bool Prefix(int inHash, out uint actualSlotTypePart, out uint subTypePart, out uint levelPart)
             {
-				actualSlotTypePart = (uint)(inHash & 63);
-				subTypePart = ((uint)inHash >> 6 & 63U);
-				levelPart = ((uint)inHash >> 12 & 1048575U);
+				actualSlotTypePart = (uint)(inHash & 63U);
+				subTypePart = (uint)inHash >> 6 & 63U;
+				levelPart = (uint)inHash >> 12 & 1048575U;
 				return false;
             }
         }

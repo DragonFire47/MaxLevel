@@ -1,10 +1,11 @@
 ﻿using PulsarModLoader;
+using PulsarModLoader.MPModChecks;
 
 namespace MaxLevel
 {
     public class Mod : PulsarMod
     {
-        public override string Version => "0.1.3";
+        public override string Version => "0.1.4";
 
         public override string Author => "Dragon";
 
@@ -12,7 +13,7 @@ namespace MaxLevel
 
         public override string Name => "MaxLevel";
 
-        public override int MPFunctionality => (int)MPFunction.All;
+        public override int MPRequirements => (int)MPRequirement.All;
 
         public override string HarmonyIdentifier()
         {
